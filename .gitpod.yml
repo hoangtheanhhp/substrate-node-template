@@ -1,0 +1,3 @@
+tasks:
+  - init: ./script/init.sh & cargo build
+    command: cargo watch -x run
