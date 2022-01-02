@@ -5,9 +5,10 @@ pub use pallet::*;
 
 #[frame_support::pallet]
 pub mod pallet {
-	use frame_support::{dispatch::*, pallet_prelude::*};
+	use frame_support::{dispatch::*, pallet_prelude::*, traits::Currency};
 	use frame_system::pallet_prelude::*;
 	use scale_info::TypeInfo;
+	use sp_runtime::SaturatedConversion;
 
 	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo)]
 	#[scale_info(skip_type_params(T))]
@@ -36,6 +37,7 @@ pub mod pallet {
 	pub trait Config: frame_system::Config {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+		type MyCurrency: Currency<Self::AccountId>;
 	}
 
 	#[pallet::pallet]
@@ -56,6 +58,8 @@ pub mod pallet {
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		SetZodiacSucceed(T::AccountId),
+		TotalIssuance(u32),
+		FreeBalance(u32)
 	}
 
 	// Errors inform users that something went wrong.
@@ -69,15 +73,26 @@ pub mod pallet {
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
 		#[pallet::weight(10_000)]
-		pub fn setZodiac(origin: OriginFor<T>) -> DispatchResult {
+		pub fn set_zodiac(origin: OriginFor<T>, zodiac: Zodiac) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 			if AccountZodiac::<T>::contains_key(&who) {
 				Err(Error::<T>::ZodiacWasSet)?
 			} else {
-				AccountZodiac::<T>::insert(&who, Zodiac::Aquarius);
+				AccountZodiac::<T>::insert(&who, zodiac);
 				Self::deposit_event(Event::<T>::SetZodiacSucceed(who));
 			}
 			// Return a successful DispatchResultWithPostInfo
+			Ok(())
+		}
+		#[pallet::weight(10_000)]
+		pub fn get_balance_info(origin: OriginFor<T>) -> DispatchResult {
+			let who = ensure_signed(origin)?;
+			let total_issuance = T::MyCurrency::total_issuance();
+			let value = total_issuance.saturated_into::<u32>();
+			let free_balance = T::MyCurrency::free_balance(&who);
+			let my_balance = free_balance.saturated_into::<u32>();
+			Self::deposit_event(Event::<T>::TotalIssuance(value));
+			Self::deposit_event(Event::<T>::FreeBalance(my_balance));
 			Ok(())
 		}
 	}

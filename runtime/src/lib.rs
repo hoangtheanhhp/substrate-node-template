@@ -283,6 +283,7 @@ impl pallet_template::Config for Runtime {
 /// Configure the pallet-zodiac in pallets/zodiac.
 impl pallet_zodiac::Config for Runtime {
 	type Event = Event;
+	type MyCurrency = Balances;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
