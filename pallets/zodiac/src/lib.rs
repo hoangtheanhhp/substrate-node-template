@@ -10,7 +10,7 @@ pub mod pallet {
 	use scale_info::TypeInfo;
 	use sp_runtime::SaturatedConversion;
 
-	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo)]
+	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo, Eq)]
 	#[scale_info(skip_type_params(T))]
 	pub enum Zodiac {
 		Aquarius,
@@ -31,6 +31,12 @@ pub mod pallet {
 		fn default() -> Self { Zodiac::Aquarius }
 	}
 
+	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo, Eq)]
+	#[scale_info(skip_type_params(T))]
+	pub struct Post {
+		old: u128,
+		zodiac: Zodiac,
+	}
 
 	/// Configure the pallet by specifying the parameters and types on which it depends.
 	#[pallet::config]
