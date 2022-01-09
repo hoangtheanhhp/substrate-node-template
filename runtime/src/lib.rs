@@ -43,8 +43,10 @@ pub use sp_runtime::{Perbill, Permill};
 /// Import the template pallet.
 pub use pallet_template;
 
-/// Import the template pallet.
 pub use pallet_zodiac;
+
+
+pub use pallet_poe;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -286,6 +288,20 @@ impl pallet_zodiac::Config for Runtime {
 	type MyCurrency = Balances;
 }
 
+parameter_types! {
+	pub const MaximumClaim :u32 = 2147483648;
+	pub const MinimumClaim :u32 = 32;
+
+}
+
+
+/// Configure the pallet-zodiac in pallets/zodiac.
+impl pallet_poe::Config for Runtime {
+	type Event = Event;
+	type MaximumClaimLength = MaximumClaim;
+	type MinimumClaimLength = MinimumClaim;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -304,6 +320,7 @@ construct_runtime!(
 		// Include the custom logic from the pallet-template in the runtime.
 		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
 		Zodiac: pallet_zodiac::{Pallet, Call, Storage, Event<T>},
+		Poe: pallet_poe::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

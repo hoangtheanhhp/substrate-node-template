@@ -194,6 +194,12 @@ default-features = false
 path = '../pallets/zodiac'
 version = '0.0.1'
 
+
+[dependencies.pallet-poe]
+default-features = false
+path = '../pallets/poe'
+version = '0.0.1'
+
 [features]
 default = ['std']
 runtime-benchmarks = [
@@ -235,4 +241,5 @@ std = [
     'sp-transaction-pool/std',
     'sp-version/std',
     'pallet-zodiac/std',
+    'pallet-poe/std',
 ]
