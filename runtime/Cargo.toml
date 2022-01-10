@@ -205,6 +205,11 @@ default-features = false
 path = '../pallets/utils'
 version = '0.0.1'
 
+[dependencies.pallet-post]
+default-features = false
+path = '../pallets/posts'
+version = '0.0.1'
+
 [features]
 default = ['std']
 runtime-benchmarks = [
@@ -248,4 +253,5 @@ std = [
     'pallet-zodiac/std',
     'pallet-poe/std',
     'pallet-utils/std',
+    'pallet-post/std'
 ]

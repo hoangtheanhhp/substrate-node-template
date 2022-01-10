@@ -1,41 +1,17 @@
 [package]
-name = 'pallet-posts'
+name = 'pallet-post'
 version = '0.0.1'
-authors = ['Anhht <hoangtheanhhp@gmail.com>']
+description = 'FRAME pallet template for defining custom runtime logic.'
 edition = '2021'
-description = 'Post management pallet'
-keywords = ['blockchain', 'cryptocurrency', 'social-network', 'news-feed', 'marketplace']
-categories = ['cryptography::cryptocurrencies']
+license = 'Unlicense'
+publish = false
 
-[features]
-default = ['std']
-std = [
-    'serde',
-    'codec/std',
-    'frame-support/std',
-    'frame-system/std',
-    'sp-runtime/std',
-    'sp-std/std',
-    'df-traits/std',
-    'pallet-permissions/std',
-    'pallet-space-follows/std',
-    'pallet-spaces/std',
-    'pallet-utils/std',
-]
+[package.metadata.docs.rs]
+targets = ['x86_64-unknown-linux-gnu']
 
 [dependencies]
-# Local dependencies
-df-traits = { default-features = false, path = '../traits' }
-pallet-permissions = { default-features = false, path = '../permissions' }
-pallet-space-follows = { default-features = false, path = '../space-follows' }
-pallet-spaces = { default-features = false, path = '../spaces' }
-pallet-utils = { default-features = false, path = '../utils' }
-
-# Substrate dependencies
-impl-trait-for-tuples = '0.1.3'
-jsonrpc-core = '15.0.0'
 codec = { default-features = false, features = ['derive'], package = 'parity-scale-codec', version = '2.0.0' }
-serde = { features = ['derive'], optional = true, version = '1.0.119' }
+serde = { version = "1.0.119" }
 log = { version = "0.4.14", default-features = false }
 scale-info = { default-features = false, features = ['derive'], version = "1.0" }
 
@@ -48,4 +24,17 @@ pallet-balances = { default-features = false, git = 'https://github.com/parityte
 sp-core = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
-pallet-timestamp = { git = 'https://github.com/paritytech/substrate', tag = 'monthly-2021-10', version = '4.0.0-dev', default-features = false }
+pallet-utils = { default-features = false, path='../utils', version = '0.0.1'}
+
+[features]
+default = ['std']
+runtime-benchmarks = ['frame-benchmarking']
+std = [
+    'codec/std',
+    'scale-info/std',
+    'frame-support/std',
+    'frame-system/std',
+    'frame-benchmarking/std',
+    'sp-std/std',
+]
+try-runtime = ['frame-support/try-runtime']

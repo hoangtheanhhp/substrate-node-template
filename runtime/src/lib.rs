@@ -48,6 +48,8 @@ pub use pallet_zodiac;
 
 pub use pallet_poe;
 
+pub use pallet_post;
+
 use pallet_utils::{SpaceId, PostId, DEFAULT_MIN_HANDLE_LEN, DEFAULT_MAX_HANDLE_LEN};
 
 
@@ -301,7 +303,7 @@ parameter_types! {
 /// Configure the pallet-zodiac in pallets/zodiac.
 impl pallet_poe::Config for Runtime {
 	type Event = Event;
-	type ClassData = pallet_zodiac::Post;
+	type ClassData = pallet_post::Post;
 	type MaximumClaimLength = MaximumClaim;
 	type MinimumClaimLength = MinimumClaim;
 }
@@ -312,12 +314,16 @@ parameter_types! {
 	pub const MaxHandleLen: u32 = DEFAULT_MAX_HANDLE_LEN;
   }
   
-  impl pallet_utils::Config for Runtime {
-	  type Event = Event;
-	  type Currency = Balances;
-	  type MinHandleLen = MinHandleLen;
-	  type MaxHandleLen = MaxHandleLen;
-  }
+impl pallet_utils::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+	type MinHandleLen = MinHandleLen;
+	type MaxHandleLen = MaxHandleLen;
+}
+
+impl pallet_post::Config for Runtime {
+	type Event = Event;
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -339,6 +345,7 @@ construct_runtime!(
 		Zodiac: pallet_zodiac::{Pallet, Call, Storage, Event<T>},
 		Poe: pallet_poe::{Pallet, Call, Storage, Event<T>},
 		Utils: pallet_utils::{Pallet, Storage, Event<T>, Config<T>},
+		Post: pallet_post::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

@@ -25,6 +25,10 @@ sp-core = { default-features = false, git = 'https://github.com/paritytech/subst
 sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-10', version = '4.0.0-dev' }
 pallet-zodiac = { default-features = false, path = '../zodiac', version = '0.0.1' }
+pallet-post = { default-features = false, path = '../posts', version = '0.0.1' }
+pallet-utils = { default-features = false, path = '../utils', version = '0.0.1' }
+
+
 
 [features]
 default = ['std']

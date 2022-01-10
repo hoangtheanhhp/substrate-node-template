@@ -1,11 +1,14 @@
 use crate::{mock::*, Error, Proofs};
 use frame_support::{assert_noop, assert_ok};
-use pallet_zodiac::*;
+use pallet_post::Post;
+use pallet_utils::Content;
 
 #[test]
 fn create_claim_works() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         assert_ok!(PoeModule::create_claim(Origin::signed(1), claim.clone()));
         assert_eq!(Proofs::<Test>::get(&claim),
         Some((1, frame_system::Pallet::<Test>::block_number())))
@@ -15,7 +18,9 @@ fn create_claim_works() {
 #[test]
 fn create_claim_failed_when_claim_already_exists() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_noop!(
             PoeModule::create_claim(Origin::signed(1), claim.clone()),
@@ -29,7 +34,9 @@ fn create_claim_failed_when_claim_already_exists() {
 #[test]
 fn revoke_claim_works() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_ok!(PoeModule::revoke_claim(Origin::signed(1), claim.clone()));
         assert_eq!(Proofs::<Test>::get(&claim),
@@ -40,7 +47,9 @@ fn revoke_claim_works() {
 #[test]
 fn revoke_claim_failed_when_claim_is_not_exist() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         assert_noop!(
             PoeModule::revoke_claim(Origin::signed(1), claim.clone()),
             Error::<Test>::ClaimNotExist
@@ -51,7 +60,9 @@ fn revoke_claim_failed_when_claim_is_not_exist() {
 #[test]
 fn revoke_claim_failed_when_sender_is_not_owner() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_noop!(
             PoeModule::revoke_claim(Origin::signed(2), claim.clone()),
@@ -64,7 +75,9 @@ fn revoke_claim_failed_when_sender_is_not_owner() {
 #[test]
 fn transfer_claim_works() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_ok!(PoeModule::transfer_claim(Origin::signed(1), 3, claim.clone()));
         assert_eq!(Proofs::<Test>::get(&claim),
@@ -75,7 +88,9 @@ fn transfer_claim_works() {
 #[test]
 fn transfer_claim_failed_when_claim_is_not_exist() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+                let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         assert_noop!(
             PoeModule::transfer_claim(Origin::signed(1), 1, claim.clone()),
             Error::<Test>::ClaimNotExist
@@ -86,7 +101,9 @@ fn transfer_claim_failed_when_claim_is_not_exist() {
 #[test]
 fn transfer_claim_failed_when_sender_is_not_owner() {
     new_test_ext().execute_with(||{
-        let claim = Post { old: 1, zodiac: Zodiac::Aquarius};
+        let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_noop!(
             PoeModule::transfer_claim(Origin::signed(3), 2, claim.clone()),
@@ -98,7 +115,9 @@ fn transfer_claim_failed_when_sender_is_not_owner() {
 #[test]
 fn transfer_claim_failed_when_sender_is_destination() {
     new_test_ext().execute_with(||{
-        let claim = Post { abc: 1, owner: 2};
+        let a = String::from("hello world").as_bytes().to_vec();
+        let content = Content::from(Content::Raw(a));
+        let claim = Post { id: 1, content: content.clone()};
         let _ = PoeModule::create_claim(Origin::signed(1), claim.clone());
         assert_noop!(
             PoeModule::transfer_claim(Origin::signed(1), 1, claim.clone()),

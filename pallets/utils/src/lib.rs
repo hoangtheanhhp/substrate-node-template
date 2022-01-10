@@ -18,6 +18,8 @@ use sp_std::{
     collections::btree_set::BTreeSet,
     prelude::*,
 };
+use scale_info::TypeInfo;
+
 
 #[cfg(test)]
 mod mock;
@@ -75,7 +77,7 @@ impl<AccountId> User<AccountId> {
     }
 }
 
-#[derive(Encode, Decode, Clone, Eq, PartialEq, RuntimeDebug)]
+#[derive(Encode, Decode, Clone, Eq, PartialEq, RuntimeDebug, TypeInfo)]
 #[cfg_attr(feature = "std", derive(Deserialize))]
 #[cfg_attr(feature = "std", serde(tag = "contentType", content = "contentId"))]
 pub enum Content {
@@ -93,7 +95,7 @@ pub enum Content {
 impl From<Content> for Vec<u8> {
     fn from(content: Content) -> Vec<u8> {
         match content {
-            Content::None => vec![],
+            Content::None => Vec::new(),
             Content::Raw(vec_u8) => vec_u8,
             Content::IPFS(vec_u8) => vec_u8,
             Content::Hyper(vec_u8) => vec_u8,

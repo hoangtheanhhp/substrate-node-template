@@ -1140,6 +1140,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "df-traits"
+version = "0.7.1"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-utils",
+ "sp-runtime",
+]
+
+[[package]]
 name = "digest"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3566,6 +3576,7 @@ dependencies = [
  "pallet-balances",
  "pallet-grandpa",
  "pallet-poe",
+ "pallet-post",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
  "pallet-template",
@@ -3818,8 +3829,30 @@ dependencies = [
  "frame-system",
  "log",
  "pallet-balances",
+ "pallet-post",
  "pallet-randomness-collective-flip",
+ "pallet-utils",
  "pallet-zodiac",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-post"
+version = "0.0.1"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-balances",
+ "pallet-randomness-collective-flip",
+ "pallet-utils",
  "parity-scale-codec",
  "scale-info",
  "serde",
